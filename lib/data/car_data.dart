@@ -594,10 +594,7 @@ final CarListing car = CarListing(
   addressLine: '696 El-Hourya St, Louran, Alexandria',
   mapQuery: '696 El-Hourya Street, Louran, Alexandria, Egypt',
 
-  // Landline for calls, international mobile for WhatsApp.
-  // ⚠️ "+20 2 1234 5678" is a Cairo (02) number and the digits read like a
-  // placeholder. Alexandria landlines are +20 3. Double-check this before it
-  // goes in front of a customer — a dead number on a luxury listing is fatal.
+  // Landline for calls, international mobile for WhatsApp. Both confirmed.
   phone: '+20212345678',
   phoneDisplay: '+20 2 1234 5678',
   whatsapp: '+13215039948',

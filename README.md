@@ -159,15 +159,23 @@ minute, instead of a slow dashboard upload.
 
 Analyses, tests, builds, refreshes `public/`, commits and pushes.
 
-**Cloudflare Pages** — *Create project → Connect to Git →
-`maextro-s800-megatrust`*, then:
+**Cloudflare** — deployed as a Workers static-assets site via
+`npx wrangler deploy`. Everything it needs is in **`wrangler.jsonc`**:
+project name, `assets.directory: ./public`, and the SPA fallback.
 
-| Setting | Value |
-|---|---|
-| Framework preset | **None** |
-| Build command | **leave empty** |
-| Build output directory | **`public`** |
-| Production branch | `main` |
+⚠️ **Do not add a `_redirects` file with `/* /index.html 200`.** Cloudflare
+rejects it outright:
+
+```
+Invalid _redirects configuration:
+Line 1: Infinite loop detected in this rule. [code: 100324]
+```
+
+Their asset router rewrites `/index.html` back to `/`, which re-matches `/*`
+and cycles forever. On Workers the fallback belongs in `wrangler.jsonc` as
+`assets.not_found_handling: "single-page-application"` — which is where it
+now lives. (The app has no client-side routes anyway; the tabs are in-app
+state, so this only stops a mistyped URL returning a bare 404.)
 
 **Netlify** — *Add new site → Import an existing project →* same repo:
 
@@ -177,10 +185,12 @@ Analyses, tests, builds, refreshes `public/`, commits and pushes.
 | Publish directory | **`public`** |
 | Branch | `main` |
 
-Nothing else differs between the two. `public/` carries `_headers` and
-`_redirects` (both hosts read these) and `netlify.toml` (ignored by
-Cloudflare). No Flutter toolchain is needed on the build machine because
-nothing is built there.
+Netlify keeps its own equivalent redirect inside `netlify.toml`, where the
+loop rule is accepted, so removing `_redirects` did not affect it.
+
+`public/` carries `_headers` (read by both hosts) and `netlify.toml` (ignored
+by Cloudflare). No Flutter toolchain is needed on either build machine,
+because nothing is compiled there.
 
 ### Manual upload, if you ever need it
 
@@ -192,8 +202,8 @@ Builds and writes two ready-to-upload packages to the Desktop:
 
 | Package | Host | Config it carries |
 |---|---|---|
-| `S800-cloudflare` + `.zip` | Cloudflare Pages | `_headers`, `_redirects` |
-| `S800-netlify` + `.zip` | Netlify | `_headers`, `_redirects`, `netlify.toml` |
+| `S800-cloudflare` + `.zip` | Cloudflare | `_headers` |
+| `S800-netlify` + `.zip` | Netlify | `_headers`, `netlify.toml` |
 
 Drag the **folder** (or the zip) into the host's upload area. In both, the site
 sits at the **root** of the archive — a zip containing a wrapper directory
