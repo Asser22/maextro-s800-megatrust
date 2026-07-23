@@ -67,47 +67,59 @@ class ConfigureScreen extends StatelessWidget {
       _Summary(),
     ];
 
+    // Phones: the exterior preview is PINNED above the scrolling controls, so
+    // the car visibly changes the instant a finish is tapped — the whole point
+    // of a configurator, and the one thing the earlier layout lost on mobile.
+    if (!wide) {
+      final top = MediaQuery.of(context).padding.top;
+      return Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(margin, top + Gap.sm, margin, Gap.sm),
+            child: const _Preview(exteriorOnly: true),
+          ),
+          const Rule(),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(margin, Gap.md, margin, Gap.lg),
+              children: controls,
+            ),
+          ),
+          _PriceBar(onGo: onGo),
+        ],
+      );
+    }
+
+    // Wide: title, then the car pinned beside the controls.
     return Column(
       children: [
         Expanded(
           child: Bounded(
             child: ListView(
-              padding: EdgeInsets.fromLTRB(
-                margin,
-                tier.isCompact ? MediaQuery.of(context).padding.top + Gap.lg : Gap.lg,
-                margin,
-                Gap.lg,
-              ),
+              padding: EdgeInsets.fromLTRB(margin, Gap.lg, margin, Gap.lg),
               children: [
-                SectionHead(
+                const SectionHead(
                   eyebrow: 'Specify',
                   title: 'Build yours',
                   lede: 'Every combination below is orderable, and each one '
                       'shows the car actually wearing it.',
-                  large: tier.atLeastMedium,
+                  large: true,
                 ),
                 const SizedBox(height: Gap.lg),
-                if (!wide) ...[
-                  const _Preview(),
-                  const SizedBox(height: Gap.xl),
-                  ...controls,
-                ] else
-                  // Wide: the car stays pinned beside the controls, so the
-                  // effect of every choice is visible without scrolling.
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(flex: 6, child: _Preview()),
-                      const SizedBox(width: Gap.xl),
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: controls,
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(flex: 6, child: _Preview()),
+                    const SizedBox(width: Gap.xl),
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: controls,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -131,8 +143,14 @@ Widget _expandingSwitcher(Widget? current, List<Widget> previous) {
 
 /// Shows the exterior the buyer picked, then the cabin they picked beneath it.
 /// Both are real photographs of that specification, not a tinted render.
+///
+/// [exteriorOnly] drops the cabin frame — used for the pinned header on phones,
+/// where the exterior alone has to stay short enough to leave room for the
+/// controls to scroll beneath it.
 class _Preview extends StatelessWidget {
-  const _Preview();
+  const _Preview({this.exteriorOnly = false});
+
+  final bool exteriorOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +163,7 @@ class _Preview extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(border: Border.all(color: AppColors.hairlineSoft)),
           child: AspectRatio(
-            aspectRatio: 16 / 10,
+            aspectRatio: exteriorOnly ? 16 / 7 : 16 / 10,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -200,53 +218,55 @@ class _Preview extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: Gap.xs),
-        DecoratedBox(
-          decoration: BoxDecoration(border: Border.all(color: AppColors.hairlineSoft)),
-          child: AspectRatio(
-            aspectRatio: 16 / 8,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 480),
-                  switchInCurve: Curves.easeOutQuart,
-                  layoutBuilder: _expandingSwitcher,
-                  child: Image.asset(
-                    s.interior.asset,
-                    key: ValueKey(s.interior.asset),
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high,
+        if (!exteriorOnly) ...[
+          const SizedBox(height: Gap.xs),
+          DecoratedBox(
+            decoration: BoxDecoration(border: Border.all(color: AppColors.hairlineSoft)),
+            child: AspectRatio(
+              aspectRatio: 16 / 8,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 480),
+                    switchInCurve: Curves.easeOutQuart,
+                    layoutBuilder: _expandingSwitcher,
+                    child: Image.asset(
+                      s.interior.asset,
+                      key: ValueKey(s.interior.asset),
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high,
+                    ),
                   ),
-                ),
-                IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.center,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, AppColors.ink.withValues(alpha: 0.85)],
+                  IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.center,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, AppColors.ink.withValues(alpha: 0.85)],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: Gap.sm,
-                  bottom: Gap.sm,
-                  right: Gap.sm,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Caps('${s.interior.name} cabin', color: AppColors.champagne),
-                      ),
-                      Caps(s.variant.seatLabel, size: 9),
-                    ],
+                  Positioned(
+                    left: Gap.sm,
+                    bottom: Gap.sm,
+                    right: Gap.sm,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Caps('${s.interior.name} cabin', color: AppColors.champagne),
+                        ),
+                        Caps(s.variant.seatLabel, size: 9),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ],
     );
   }
