@@ -28,9 +28,9 @@ final CarListing car = CarListing(
   positioning:
       'Five-and-a-half metres of hand-finished sedan on a 3,370 mm wheelbase, '
       'carrying Huawei\'s most advanced drivetrain, sensor suite and cabin '
-      'electronics. It is the first Chinese car engineered without a price '
-      'ceiling, and it is the car we bring into Alexandria to order — factory '
-      'new, zero kilometres, in the exact specification you choose.',
+      'electronics. It is among the most expensive cars China has put into '
+      'production, and it is the one we bring into Alexandria to order — '
+      'factory new, zero kilometres, in the exact specification you choose.',
 
   // ── Body ──────────────────────────────────────────────────────────────────
   lengthMm: 5480,
@@ -123,8 +123,8 @@ final CarListing car = CarListing(
       electricRangeKm: 311,
       totalRangeKm: 1333,
       priceRmb: 838000,
-      note: 'The four-seat lounge with the range extender. The longest legs of '
-          'any version, at 1,333 km.',
+      note: 'The four-seat lounge with the range extender, and the longest '
+          'range in the family at 1,333 km — level with the five-seat Xinghui.',
     ),
     Variant(
       name: 'Xingyao Executive',
@@ -156,7 +156,9 @@ final CarListing car = CarListing(
         SpecItem('Length', '5,480 mm', accent: true),
         SpecItem('Width', '2,000 mm'),
         SpecItem('Height', '1,542 mm'),
-        SpecItem('Wheelbase', '3,370 mm', accent: true, note: 'Longer than a Maybach S-Class'),
+        // NOT "longer than a Maybach" — the S 680's wheelbase is 3,396 mm.
+        // The S800 beats it on overall length and width, not wheelbase.
+        SpecItem('Wheelbase', '3,370 mm', accent: true, note: 'Within 26 mm of a Maybach S 680'),
         SpecItem('Kerb weight', 'from 2,604 kg', note: 'Up to 2,920 kg, tri-motor'),
         SpecItem('Drag coefficient', 'Cd 0.206', note: 'With low-drag wheels; 0.219 standard'),
         SpecItem('Boot capacity', '445 L'),

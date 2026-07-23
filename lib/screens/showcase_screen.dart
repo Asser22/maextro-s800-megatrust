@@ -358,8 +358,9 @@ class _Dimensions extends StatelessWidget {
           const SizedBox(height: Gap.md),
         ],
         Text(
-          'Measured against the 5,480 mm overall length. The wheelbase is '
-          'longer than a long-wheelbase Maybach S-Class.',
+          'Measured against the 5,480 mm overall length. Longer and 80 mm '
+          'wider than a Mercedes-Maybach S 680, on a wheelbase within 26 mm '
+          'of it.',
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],

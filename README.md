@@ -250,6 +250,35 @@ assets/
 
 ---
 
+## Fact-check log
+
+Every figure was re-verified against two independent sources before the first
+deployment. What that caught:
+
+| Was | Now | Why |
+|---|---|---|
+| Height 1,536 mm | **1,542 mm** | CarNewsChina's database gives 1,542 for both 2025 and 2026. Wikipedia's 1,536 is the outlier. |
+| "Wheelbase longer than a Maybach S-Class" | **"Within 26 mm of a Maybach S 680"** | **False claim.** The S 680's wheelbase is 3,396 mm — *longer* than the S800's 3,370 mm. The on-screen comparison chart would have contradicted the prose. The S800 does win on overall length (5,480 vs 5,469) and width (2,000 vs 1,920). |
+| BEV 4-seat: tri-motor, 852 hp, 4.3 s | **Dual-motor, 523 hp, 4.5 s** | The 4-seat BEV is not the tri-motor car. |
+| EREV electric range 340–400 km | **258–311 km CLTC** | Per-trim database figures; the 340–400 range was not trim-specific. |
+| Tri-motor 4-seat total range 1,200 km | **1,155 km** | Per-trim figure. |
+| Tri-motor 5-seat 0–100 in 4.7 s | **4.6 s** | Per-trim figure. |
+| 5 trims | **6 trims** | The EREV dual-motor 4-seat (Xinghui Executive) was missing. |
+| Generic trim names | **Starlight / Xinghui / Xingyao, Premium & Executive** | The manufacturer's actual names. |
+| 2025 prices (¥708k–1,018k) | **2026 prices (¥728k–838k+)** | 2026 is the model year being imported. |
+| EREV battery 65 kWh | **63.3 kWh** | Changed at the 2026 refresh. |
+| "first Chinese car engineered without a price ceiling" | "among the most expensive cars China has put into production" | Unverifiable superlative. |
+| "longest legs of any version" | "level with the five-seat Xinghui" | Two trims share 1,333 km; it was not unique. |
+
+The top trim (Xingyao Executive) has **no published 2026 list price**. The 2025
+figure stands in, flagged `priceProvisional: true`, and both the range list and
+the Order screen label it so it cannot be quoted as final.
+
+Performance and range are manufacturer-claimed on the **CLTC** cycle, which is
+optimistic relative to WLTP or EPA. The app says so on the Spec screen.
+
+---
+
 ## Specification sources
 
 Figures in `car_data.dart` come from public reference material:
