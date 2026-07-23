@@ -1,0 +1,50 @@
+name: s800_showroom
+description: "Interactive showroom & sales app for the Xiaomi S800."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/car/
+    - assets/brand/
+
+  fonts:
+    # Bodoni Moda, pinned to optical size 72 — hairline serifs and extreme
+    # stroke contrast. Display sizes only; it is unreadable small.
+    - family: Display
+      fonts:
+        - asset: assets/fonts/Bodoni-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Bodoni-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Bodoni-SemiBold.ttf
+          weight: 600
+    # Jost — geometric sans in the Futura lineage. The classic counterpart to
+    # a Didone, and it carries small tracked-out capitals well.
+    - family: Sans
+      fonts:
+        - asset: assets/fonts/Jost-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Jost-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Jost-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Jost-SemiBold.ttf
+          weight: 600

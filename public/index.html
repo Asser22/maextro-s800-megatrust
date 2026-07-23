@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description"
+        content="Maextro S800 — the Huawei and JAC ultra-luxury sedan, imported new from China to Alexandria, Egypt. Built to order.">
+
+  <!-- Added to a home screen this becomes the app name and icon, so both
+       are branded rather than left as the Flutter defaults. -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="S800">
+  <link rel="apple-touch-icon" href="icons/Icon-180.png">
+  <meta name="theme-color" content="#100E0C">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Link previews, for when this is sent over WhatsApp. -->
+  <meta property="og:title" content="Maextro S800 · Alexandria">
+  <meta property="og:description"
+        content="The flagship China built to answer Maybach. Imported new to order.">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:type" content="website">
+
+  <title>Maextro S800 · Alexandria</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* The engine takes a moment to boot. Without this the browser shows a
+       white page first, which is jarring against a near-black app. */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #0A0908;
+    }
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      background: #0A0908;
+      transition: opacity .6s ease;
+    }
+    #boot.done { opacity: 0; pointer-events: none; }
+    #boot .mark {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 34px;
+      letter-spacing: .06em;
+      color: #F2EDE4;
+    }
+    #boot .rule {
+      width: 44px;
+      height: 1px;
+      background: linear-gradient(90deg, #8A7038, #E6D3A8, #C6A664);
+    }
+    #boot .note {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: #6E6557;
+    }
+  </style>
+</head>
+<body>
+  <div id="boot">
+    <div class="mark">S800</div>
+    <div class="rule"></div>
+    <div class="note">Alexandria</div>
+  </div>
+
+  <script>
+    // Fade the boot plate out once Flutter has painted its first frame.
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      boot.classList.add('done');
+      setTimeout(function () { boot.remove(); }, 700);
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

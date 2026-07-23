@@ -1,0 +1,15 @@
+# Understood by Cloudflare Pages, Netlify and Vercel alike, so the same
+# folder can be dropped on any of them without edits.
+
+/canvaskit/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=604800
+
+# Must never be cached, or a redeploy never reaches a returning visitor.
+/index.html
+  Cache-Control: no-cache
+
+/flutter_service_worker.js
+  Cache-Control: no-cache
