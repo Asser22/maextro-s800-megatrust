@@ -1,0 +1,29 @@
+{
+  // Cloudflare Workers Static Assets. `npx wrangler deploy` reads this, so the
+  // deploy is deterministic instead of wrangler guessing and writing its own
+  // config on every build.
+  //
+  // There is no `main` — this is a pure static site with no Worker script.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "maextros800car",
+  "compatibility_date": "2026-07-23",
+
+  "assets": {
+    "directory": "./public",
+
+    // The SPA fallback belongs HERE, not in a _redirects file.
+    //
+    // A `/* -> /index.html 200` rule is rejected by Cloudflare with
+    // "Infinite loop detected": their asset router rewrites `/index.html`
+    // back to `/`, which re-matches `/*` and loops forever. This flag does
+    // the same job at the router level, without the cycle.
+    //
+    // The app has no client-side routes anyway — the tabs are in-app state —
+    // so this only stops a mistyped URL from returning a bare 404.
+    "not_found_handling": "single-page-application"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

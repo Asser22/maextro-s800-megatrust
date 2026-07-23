@@ -12,6 +12,10 @@ build/
 .DS_Store
 Screenshot*.png
 
+# Wrangler local state (wrangler.jsonc itself IS committed)
+.wrangler/
+node_modules/
+
 # Platform build artefacts
 ios/Pods/
 ios/.symlinks/
