@@ -73,6 +73,7 @@ class ConfigureScreen extends StatelessWidget {
     if (!wide) {
       final top = MediaQuery.of(context).padding.top;
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(margin, top + Gap.sm, margin, Gap.sm),
@@ -285,7 +286,14 @@ class _Step extends StatelessWidget {
       children: [
         Caps(number, color: AppColors.champagneDeep),
         const SizedBox(width: Gap.sm),
-        Text(title, style: Theme.of(context).textTheme.headlineMedium),
+        // Flexible so a long step title can never overflow a narrow phone.
+        Flexible(
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.headlineMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }
