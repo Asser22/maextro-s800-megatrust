@@ -93,54 +93,59 @@ class _Hero extends StatelessWidget {
   Widget _compact(BuildContext context) {
     final margin = Breakpoints.margin(context);
 
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.86,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Plate(photo: car.photos.first),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.ink.withValues(alpha: 0.80),
-                  AppColors.ink.withValues(alpha: 0.10),
-                  AppColors.ink.withValues(alpha: 0.90),
-                  AppColors.ink,
-                ],
-                stops: const [0, 0.30, 0.80, 1],
-              ),
-            ),
+    // The photograph is landscape. Cropping it into a tall portrait frame with
+    // BoxFit.cover forced a further ~2x scale on top of the source's own
+    // limits, which is what made the phone hero look pixelated. Showing it at
+    // its native aspect across the full width means the device is always
+    // DOWN-scaling it, so it stays sharp.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            margin,
+            MediaQuery.of(context).padding.top + Gap.md,
+            margin,
+            Gap.md,
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              margin,
-              MediaQuery.of(context).padding.top + Gap.md,
-              margin,
-              Gap.lg,
-            ),
-            child: Column(
+          child: Reveal(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Reveal(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset('assets/brand/mega-trust-light.png', height: 30),
-                      const Spacer(),
-                      Caps('${car.modelYear}', color: AppColors.boneMuted),
-                    ],
-                  ),
-                ),
+                Image.asset('assets/brand/mega-trust-light.png', height: 30),
                 const Spacer(),
-                _Titles(from: from, modelSize: 88, taglineSize: 16, priceSize: 30),
+                Caps('${car.modelYear}', color: AppColors.boneMuted),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: 860 / 538,
+              child: Plate(photo: car.photos.first),
+            ),
+            // Only the very bottom is veiled, to blend the plate into the page.
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, AppColors.ink],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(margin, Gap.md, margin, Gap.lg),
+          child: _Titles(from: from, modelSize: 82, taglineSize: 16, priceSize: 30),
+        ),
+      ],
     );
   }
 
