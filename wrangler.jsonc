@@ -5,7 +5,7 @@
   //
   // There is no `main` — this is a pure static site with no Worker script.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "maextros800car",
+  "name": "maextros800",
   "compatibility_date": "2026-07-23",
 
   "assets": {
