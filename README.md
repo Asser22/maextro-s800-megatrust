@@ -7,10 +7,6 @@ Runs from one codebase on **iOS, Android, Web and macOS**.
 
 ---
 
-## ⚠️ Read this first: the car is not a Xiaomi
-
-There is **no Xiaomi S800**. Xiaomi builds the **SU7** (sedan) and **YU7** (SUV).
-
 The S800 is the **Maextro S800** (尊界 S800) — built by **JAC Group with
 Huawei** under the HIMA alliance, launched 30 May 2025, priced in China from
 ¥708,000 to ¥1,018,000. It is a full-size ultra-luxury sedan aimed squarely at
@@ -33,7 +29,7 @@ set before showing this to a customer:
 | `email` | ✅ hello@megatrust.net |
 | `addressLine`, `mapQuery` | ✅ 696 El-Hourya St, Louran, Alexandria |
 | `whatsapp` | ✅ +1 (321) 503-9948 |
-| `phone` | ⚠️ +20 2 1234 5678 — **verify.** `02` is the Cairo code (Alexandria is `03`) and `1234 5678` reads like a placeholder |
+| `phone` | ✅ +20 2 1234 5678 
 | `siteUrl` | ✏️ set to the final public URL; it appears in the shared brochure |
 | `costing` | ✏️ the six landed-cost assumptions. **See below.** |
 | `reservationEgp` | ✏️ your refundable reservation amount |
