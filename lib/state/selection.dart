@@ -2,6 +2,19 @@ import 'package:flutter/widgets.dart';
 
 import '../data/car_data.dart';
 import '../models/car.dart';
+import '../services/rates.dart';
+
+/// Where the exchange rates currently in use came from.
+enum RateSource {
+  /// The built-in figures from car_data.dart; live rates not (yet) loaded.
+  estimated,
+
+  /// Live mid-market rates fetched this session.
+  live,
+
+  /// A live rate was fetched, then the user edited a rate by hand.
+  adjusted,
+}
 
 /// The buyer's current build, plus the costing assumptions used to price it.
 ///
@@ -18,6 +31,12 @@ class Selection extends ChangeNotifier {
   PaintOption _paint;
   InteriorOption _interior;
   ImportCosting _costing;
+
+  RateSource _rateSource = RateSource.estimated;
+  String _rateDate = '';
+
+  RateSource get rateSource => _rateSource;
+  String get rateDate => _rateDate;
 
   Variant get variant => _variant;
   PaintOption get paint => _paint;
@@ -44,11 +63,33 @@ class Selection extends ChangeNotifier {
 
   set costing(ImportCosting value) {
     _costing = value;
+    // A hand edit means the figure is no longer purely the fetched live rate.
+    if (_rateSource == RateSource.live) _rateSource = RateSource.adjusted;
     notifyListeners();
   }
 
   void resetCosting() {
     _costing = car.costing;
+    _rateSource = RateSource.estimated;
+    _rateDate = '';
+    notifyListeners();
+  }
+
+  /// Fetches live mid-market rates and folds them into the current costing,
+  /// leaving duty, tax, clearance and margin untouched. Silently keeps the
+  /// built-in defaults if the network is unavailable.
+  Future<void> loadLiveRates() async {
+    final rates = await RatesService.fetch();
+    if (rates == null) return;
+    // Don't stomp on a rate the user has already started editing.
+    if (_rateSource == RateSource.adjusted) return;
+
+    _costing = _costing.copyWith(
+      egpPerRmb: rates.egpPerRmb,
+      usdToEgp: rates.usdToEgp,
+    );
+    _rateSource = RateSource.live;
+    _rateDate = rates.date;
     notifyListeners();
   }
 

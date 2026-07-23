@@ -33,6 +33,14 @@ class _ShellState extends State<Shell> {
   static const _tabs = ['Home', 'Gallery', 'Spec', 'Build', 'Order'];
 
   @override
+  void initState() {
+    super.initState();
+    // Pull live exchange rates once, in the background. The UI is fully usable
+    // on the built-in defaults meanwhile, and this quietly upgrades them.
+    _selection.loadLiveRates();
+  }
+
+  @override
   void dispose() {
     _selection.dispose();
     super.dispose();

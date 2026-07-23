@@ -76,6 +76,8 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
 
         const SizedBox(height: Gap.sm),
+        _RateBadge(source: s.rateSource, date: s.rateDate),
+        const SizedBox(height: Gap.sm),
         Panel(
           filled: false,
           padding: const EdgeInsets.all(Gap.sm),
@@ -502,6 +504,58 @@ class _ReserveState extends State<_Reserve> {
         const SizedBox(height: Gap.md),
         Text(car.showroomNote, style: t.bodySmall, textAlign: TextAlign.center),
       ],
+    );
+  }
+}
+
+/// A slim strip showing where the exchange rate came from — live, estimated, or
+/// live-then-adjusted — so the figure above is never mistaken for a firm quote.
+class _RateBadge extends StatelessWidget {
+  const _RateBadge({required this.source, required this.date});
+
+  final RateSource source;
+  final String date;
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, icon, label, detail) = switch (source) {
+      RateSource.live => (
+          AppColors.jade,
+          Icons.trending_up_rounded,
+          'Live exchange rate',
+          date.isEmpty ? 'Mid-market, today' : 'Mid-market · $date',
+        ),
+      RateSource.adjusted => (
+          AppColors.champagne,
+          Icons.tune_rounded,
+          'Rate adjusted by you',
+          'Live rate, edited below',
+        ),
+      RateSource.estimated => (
+          AppColors.amber,
+          Icons.schedule_rounded,
+          'Estimated rate',
+          'Fetching the live rate…',
+        ),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: Gap.sm, vertical: 9),
+      decoration: BoxDecoration(
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+        color: color.withValues(alpha: 0.06),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: Gap.xs),
+          Expanded(child: Caps(label, color: color, size: 10)),
+          Text(
+            detail,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 11),
+          ),
+        ],
+      ),
     );
   }
 }
