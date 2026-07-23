@@ -1,0 +1,52 @@
+# Read by Netlify from the root of a drag-and-drop deploy.
+#
+# Netlify's post-processing tries to parse and re-minify every JS/CSS asset it
+# finds. A 2.6 MB dart2js bundle plus multi-megabyte WebAssembly is exactly the
+# shape of input that makes that step stall, which leaves the site published
+# but unable to serve. Flutter's output is already minified and tree-shaken, so
+# there is nothing to gain from it — turn it off.
+[build.processing]
+  skip_processing = true
+
+[build.processing.html]
+  pretty_urls = false
+
+# Correct MIME types. A .wasm served as anything other than application/wasm
+# fails instantiateStreaming and the canvas never paints.
+[[headers]]
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+# The engine and fonts are content-hashed by the build, so they can be cached
+# hard. index.html must not be, or a redeploy never reaches returning visitors.
+[[headers]]
+  for = "/canvaskit/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/flutter_service_worker.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+# Single-page app: every path resolves to index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

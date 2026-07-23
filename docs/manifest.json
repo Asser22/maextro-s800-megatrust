@@ -1,0 +1,35 @@
+{
+    "name": "Maextro S800 · Alexandria",
+    "short_name": "S800",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0A0908",
+    "theme_color": "#100E0C",
+    "description": "Maextro S800 — the Huawei and JAC ultra-luxury sedan, imported new from China to Alexandria, Egypt. Built to order.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
