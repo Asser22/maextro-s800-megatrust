@@ -151,6 +151,43 @@ iOS and macOS builds need the full Xcode, not just Command Line Tools.
 
 ## Publishing the site
 
+### The normal way — push to deploy
+
+`public/` holds the built site and **is committed**. Both hosts serve it
+straight from the repo with no build step, so a push is a deploy — about a
+minute, instead of a slow dashboard upload.
+
+```bash
+./tool/deploy.sh "what changed"
+```
+
+Analyses, tests, builds, refreshes `public/`, commits and pushes.
+
+**Cloudflare Pages** — *Create project → Connect to Git →
+`maextro-s800-megatrust`*, then:
+
+| Setting | Value |
+|---|---|
+| Framework preset | **None** |
+| Build command | **leave empty** |
+| Build output directory | **`public`** |
+| Production branch | `main` |
+
+**Netlify** — *Add new site → Import an existing project →* same repo:
+
+| Setting | Value |
+|---|---|
+| Build command | **leave empty** |
+| Publish directory | **`public`** |
+| Branch | `main` |
+
+Nothing else differs between the two. `public/` carries `_headers` and
+`_redirects` (both hosts read these) and `netlify.toml` (ignored by
+Cloudflare). No Flutter toolchain is needed on the build machine because
+nothing is built there.
+
+### Manual upload, if you ever need it
+
 ```bash
 ./tool/package_web.sh
 ```
